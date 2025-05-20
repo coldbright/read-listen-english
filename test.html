@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>트리 메뉴</title>
+  <style>
+    body {
+      background-color: #e6d4fc;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+    }
+
+    .tree-menu {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .tree-item {
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .tree-item span {
+      font-size: 1.3em;
+    }
+
+    .children {
+      margin-left: 20px;
+      display: none;
+    }
+
+    .tree-item.open > .children {
+      display: block;
+    }
+
+    .icon {
+      display: inline-block;
+      width: 1em;
+    }
+  </style>
+</head>
+<body>
+
+<ul class="tree-menu">
+  <li class="tree-item open">
+    <span onclick="toggle(this)">
+      <span class="icon">▼</span> Seed Class
+    </span>
+    <ul class="children">
+      <li>정보 1</li>
+      <li>정보 2</li>
+      <li>정보 3</li>
+    </ul>
+  </li>
+  <li class="tree-item">
+    <span onclick="toggle(this)">
+      <span class="icon">▶</span> Stem Class
+    </span>
+  </li>
+  <li class="tree-item">
+    <span onclick="toggle(this)">
+      <span class="icon">▶</span> Tree Class
+    </span>
+  </li>
+</ul>
+
+<script>
+  function toggle(el) {
+    const item = el.parentElement;
+    const icon = el.querySelector('.icon');
+
+    item.classList.toggle('open');
+    icon.textContent = item.classList.contains('open') ? '▼' : '▶';
+  }
+</script>
+
+</body>
+</html>
