@@ -2,3 +2,5 @@ read-listen-english.pem
 .env
 test/
 node_modules/
+login_logic.txt
+public/register.html
