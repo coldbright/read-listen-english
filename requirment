@@ -1,1 +1,3 @@
 express http socket.io path body-parser bcrypt jsonwebtoken mysql pm2 dotenv
+
+server start : sudo node server.js

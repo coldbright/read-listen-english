@@ -44,7 +44,7 @@ app.post("/register", async (req, res) => {
         return res.status(400).json({ message: "비밀번호가 일치하지 않습니다." });
     }
 
-    connection.query("SELECT * FROM user_acount WHERE email = ?", [email], async (error, results) => {
+    connection.query("SELECT * FROM user_accounts WHERE email = ?", [email], async (error, results) => {
         if (error) return res.status(500).json({ message: "서버 오류 발생" });
 
         if (results.length > 0) return res.status(409).json({ message: "이미 존재하는 이메일입니다." });
@@ -52,7 +52,7 @@ app.post("/register", async (req, res) => {
         try {
             const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS);
             connection.query(
-                "INSERT INTO user_acount (username, email, password) VALUES (?, ?, ?)",
+                "INSERT INTO user_accounts (username, email, password) VALUES (?, ?, ?)",
                 [username, email, hashedPassword],
                 (error) => {
                     if (error) return res.status(500).json({ message: "회원가입 실패" });

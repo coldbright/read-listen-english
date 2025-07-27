@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Investment Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+    body {
+      margin: 0;
+      font-family: 'Nunito', Arial, sans-serif;
+      background: #f4f6fc;
+      color: #222;
+      overflow-x: hidden;
+    }
+    .container {
+      display: flex;
+      width: 100vw;
+      min-height: 100vh;
+      background: #e4e8f3;
+      border-radius: 25px;
+      box-sizing: border-box;
+      padding: 30px;
+    }
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(60, 75, 180, 0.07);
+      padding: 30px 18px 0 18px;
+      margin-right: 25px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 1.3rem;
+      letter-spacing: -1px;
+      margin-bottom: 35px;
+      color: #444;
+    }
+    .profit {
+      font-size: 2.2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      margin-top: 25px;
+    }
+    .profit-small {
+      color: #4fc466;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    .nav {
+      margin-top: 40px;
+    }
+    .nav li {
+      list-style: none;
+      margin: 10px 0;
+      font-weight: 600;
+      cursor: pointer;
+      color: #333;
+      position: relative;
+      padding-left: 8px;
+      transition: color .2s;
+    }
+    .nav li.active,
+    .nav li:hover {
+      color: #6349e6;
+    }
+    .nav li .badge {
+      background: #f34c4c;
+      color: #fff;
+      border-radius: 30%;
+      padding: 1px 8px;
+      font-size: 0.9rem;
+      position: absolute;
+      right: -20px;
+      top: 0;
+    }
+    .logout {
+      margin-top: auto;
+      font-size: .95rem;
+      color: #aaa;
+      cursor: pointer;
+      margin-bottom: 25px;
+    }
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+    .top-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: #fff;
+      border-radius: 20px;
+      padding: 35px;
+      box-shadow: 0 2px 24px rgba(147,105,235,0.10);
+      position: relative;
+    }
+    .asset-profit {
+      width: 60%;
+      background: #274675;
+      border-radius: 16px 36px 60px 14px;
+      color: #fff;
+      padding: 32px 28px 18px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .asset-profit h2 {
+      margin: 0 0 17px 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .ap-cards {
+      display: flex;
+      gap: 38px;
+      font-size: 1.18rem;
+      font-weight: 600;
+    }
+    .ap-cards .ap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .ap small {
+      color: #ece6ff;
+      font-size: .97rem;
+      font-weight: 400;
+      margin-bottom: 3px;
+    }
+    .stats-graph {
+      margin: 18px 0 10px 0;
+    }
+    .stat-change {
+      font-size: 1.1rem;
+      color: #88ffe8;
+      font-weight: 700;
+    }
+    .explore-btn {
+      padding: 10px 25px;
+      background: #ff805c;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 2px 12px rgba(255, 128, 92, 0.12);
+      font-size: 1rem;
+    }
+    .medium-circle {
+      position: absolute;
+      top: 47px;
+      right: 22px;
+      width: 112px;
+      height: 112px;
+      background: conic-gradient(#f89341 0 36deg, #fff2, #7b21e6 0 360deg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #ff805c;
+      font-size: 2.1rem;
+      font-weight: bold;
+      z-index: 3;
+      border: 7px solid #fff;
+    }
+    .medium-circle span {
+      font-size: 1rem;
+      color: #fff;
+      font-weight: 400;
+      display: block;
+    }
+    .asset-value {
+      min-width: 260px;
+      margin-left: 36px;
+    }
+    .asset-value h3 {
+      font-weight: 700;
+      font-size: 2.7rem;
+      margin: 0 0 18px 0;
+    }
+    .asset-breakdown {
+      font-size: 1.1rem;
+      margin-top: 16px;
+    }
+    .asset-breakdown td {
+      vertical-align: top;
+      padding-bottom: 6px;
+      padding-right: 12px;
+    }
+    .profile-pic {
+      width: 55px; height: 55px;
+      border-radius: 50%;
+      position: absolute;
+      top: 25px; right: 22px;
+      border: 3px solid #ddd;
+    }
+    .bottom-panel {
+      display: flex;
+      gap: 28px;
+      margin-top: 12px;
+    }
+    .insights, .market-moves {
+      background: #fff;
+      border-radius: 20px;
+      padding: 27px 30px;
+      flex: 1;
+      box-shadow: 0 1px 14px rgba(147,105,235,0.06);
+    }
+    .insights-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .weekly-insights {
+      display: flex;
+      gap: 41px;
+      align-items: flex-end;
+    }
+    .growth, .loss {
+      font-size: 1.6rem;
+      color: #5edc91;
+      font-weight: bold;
+    }
+    .loss {
+      color: #f15d56;
+    }
+
+    /* 프로바 막대 밑 요일 레이블 및 툴팁 */
+    .pro-bar-wrapper {
+      width: 280px;
+      margin: 0 auto;
+      margin-top: 18px;
+      position: relative;
+    }
+    .pro-bar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 7px;
+    }
+    .bar {
+      width: 24px;
+      background-color: #ceb1eb;
+      border-radius: 4px;
+      transition: height 0.3s;
+      position: relative;
+      cursor: pointer;
+    }
+    .bar.wed { background-color: #7b21e6; }
+    .bar.fri { background-color: #ff805c; }
+    .pro-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .pro-bar-labels span {
+      width: 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #444;
+      user-select: none;
+      display: block;
+      letter-spacing: -0.5px;
+    }
+    /* 툴팁 스타일 */
+    .bar-tooltip {
+      position: absolute;
+      background: #333;
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      pointer-events: none;
+      white-space: nowrap;
+      transform: translateX(-50%) translateY(-120%);
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 100;
+      user-select: none;
+      left: 50%;
+      top: 0;
+    }
+    .bar-tooltip.visible {
+      opacity: 1;
+    }
+
+    .market-moves-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      font-size: 1.07rem;
+    }
+    .market-moves-item:last-child {margin-bottom: 0;}
+    .stock-icon {
+      width: 33px; height: 33px;
+      border-radius: 10px;
+      background: #eee;
+      display: inline-block;
+      text-align: center;
+      line-height: 33px;
+      font-size: 1.41rem;
+      font-weight: bold;
+    }
+    .move-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .move-detail {
+      color: #666;
+      font-size: .92rem;
+    }
+    .move-logo-nike { color: #e9543e;}
+    .move-logo-apple { color: #191919;}
+    .move-logo-btc { color: #4e7dff;}
+    .move-perc {
+      color: #61d77c;
+      margin-left: auto;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding-left: 7px;
+    }
+    /* 반응형 캔버스 wrapper */
+    .canvas-wrapper {
+      width: 100%;
+      max-width: 450px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="logo">Investio</div>
+    <div class="profit">$294 <span class="profit-small">+0.05%</span></div>
+    <ul class="nav">
+      <li class="active">Dashboard</li>
+      <li>Insights <span class="badge">12</span></li>
+      <li>Performance</li>
+      <li>Statistics</li>
+      <li>Channels</li>
+    </ul>
+    <div class="logout">&#x21bb; Logout</div>
+  </nav>
+  <!-- Main content -->
+  <main class="main">
+    <!-- Top panel -->
+    <section class="top-panel">
+      <section class="asset-profit">
+        <h2>Assets Profitability</h2>
+        <div class="ap-cards">
+          <div class="ap"><small>Funds AVG</small>$15,543</div>
+          <div class="ap"><small>Crypto AVG</small>$13,253</div>
+          <div class="ap"><small>Stocks AVG</small>$17,329</div>
+        </div>
+        <div class="stats-graph">
+          <div class="canvas-wrapper">
+            <canvas id="lineChart" width="800" height="200" style="width: 100%; background:#274675; border-radius: 20px;"></canvas>
+          </div>
+          <div class="stat-change" id="statChange">+1.42%</div>
+        </div>
+        <button class="explore-btn">Explore Statistics</button>
+        <div class="medium-circle">
+          13%
+          <span>MEDIUM</span>
+        </div>
+      </section>
+      <section class="asset-value">
+        <div style="font-size:1rem; color:#888; font-weight:600; margin-bottom:14px;">Assets Value</div>
+        <h3>$365,324</h3>
+        <table class="asset-breakdown">
+          <tr><td>Funds</td><td>$121,830</td><td>33%</td></tr>
+          <tr><td>Crypto</td><td>$61,853</td><td>17%</td></tr>
+          <tr><td>Stocks</td><td>$181,641</td><td>50%</td></tr>
+        </table>
+        <img src="https://i.pravatar.cc/70" class="profile-pic" alt="Profile picture">
+      </section>
+    </section>
+    <!-- Bottom panel -->
+    <section class="bottom-panel">
+      <section class="insights">
+        <div class="insights-title">Weekly Investment Insights</div>
+        <div class="weekly-insights">
+          <div>
+            <span class="growth">5</span><br>
+            <small>Growth Points</small>
+          </div>
+          <div>
+            <span class="loss">3</span><br>
+            <small>Loss Points</small>
+          </div>
+          <div>
+            <!-- 프로바 막대 + 요일 레이블 + 툴팁 구조 -->
+            <div class="pro-bar-wrapper" id="proBarWrapper">
+              <div class="pro-bar">
+                <div class="bar mon"></div>
+                <div class="bar tue"></div>
+                <div class="bar wed"></div>
+                <div class="bar thu"></div>
+                <div class="bar fri"></div>
+                <div class="bar sat"></div>
+                <div class="bar sun"></div>
+              </div>
+              <div class="pro-bar-labels">
+                <span>MON</span>
+                <span>TUE</span>
+                <span>WED</span>
+                <span>THU</span>
+                <span>FRI</span>
+                <span>SAT</span>
+                <span>SUN</span>
+              </div>
+            </div>
+            <small>PRO INSIGHTS</small>
+          </div>
+        </div>
+      </section>
+      <section class="market-moves">
+        <div class="market-moves-item">
+          <span class="stock-icon move-logo-nike">N</span>
+          <div class="move-info">
+            <strong>Nike Stocks</strong>
+            <span class="move-detail">15 hours ago</span>
+          </div>
+          <span class="move-perc">+1.5%</span>
+        </div>
+        <div class="market-moves-item">
+          <span class="stock-icon move-logo-apple"></span>
+          <div class="move-info">
+            <strong>Apple Stocks</strong>
+            <span class="move-detail">3 days ago</span>
+          </div>
+          <span class="move-perc">+2.1%</span>
+        </div>
+        <div class="market-moves-item">
+          <span class="stock-icon move-logo-btc">B</span>
+          <div class="move-info">
+            <strong>Bitcoin Value</strong>
+            <span class="move-detail">4 day ago</span>
+          </div>
+          <span class="move-perc">+1.1%</span>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+<script>
+  // 라인 차트(툴팁 포함)
+  const canvas = document.getElementById('lineChart');
+  const ctx = canvas.getContext('2d');
+  let dataPoints = [50,71, 31, 43,21,31];
+
+  const tooltip = document.createElement('div');
+  tooltip.style.position = 'absolute';
+  tooltip.style.background = '#333';
+  tooltip.style.color = '#fff';
+  tooltip.style.padding = '4px 10px';
+  tooltip.style.borderRadius = '5px';
+  tooltip.style.fontSize = '0.95rem';
+  tooltip.style.pointerEvents = 'none';
+  tooltip.style.display = 'none';
+  tooltip.style.zIndex = '11';
+  document.body.appendChild(tooltip);
+
+  function resizeCanvas() {
+    const wrapper = canvas.parentElement;
+    const ratio = window.devicePixelRatio || 1;
+    const displayWidth = wrapper.offsetWidth;
+    const displayHeight = 200;
+    canvas.style.width = displayWidth + "px";
+    canvas.style.height = displayHeight + "px";
+    canvas.width = displayWidth * ratio;
+    canvas.height = displayHeight * ratio;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(ratio, ratio);
+    drawLineChart(dataPoints, ratio, displayWidth, displayHeight);
+  }
+
+  function drawLineChart(data, ratio = 1, widthInit = 800, heightInit = 200) {
+    const width = widthInit;
+    const height = heightInit;
+    const padding = 35;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = '#274675';
+    ctx.fillRect(0, 0, width, height);
+
+    const maxVal = Math.max(...data);
+    const minVal = Math.min(...data);
+    const len = data.length;
+
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+
+    for (let i = 0; i < len; i++) {
+      const x = padding + (width - padding * 2) * (i / (len - 1));
+      const y = padding + (height - padding * 2) * (1 - (data[i] - minVal) / (maxVal - minVal || 1));
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    ctx.fillStyle = '#f8903d';
+    for (let i = 0; i < len; i++) {
+      const x = padding + (width - padding * 2) * (i / (len - 1));
+      const y = padding + (height - padding * 2) * (1 - (data[i] - minVal) / (maxVal - minVal || 1));
+      ctx.beginPath();
+      ctx.arc(x, y, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(x, y, 12, 0, Math.PI * 2);
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  canvas.addEventListener('mousemove', function(event) {
+    const rect = canvas.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    const x = (event.clientX - rect.left) * ratio;
+    const y = (event.clientY - rect.top) * ratio;
+
+    const wrapper = canvas.parentElement;
+    const width = wrapper.offsetWidth * ratio;
+    const height = 200 * ratio;
+    const padding = 35 * ratio;
+    const maxVal = Math.max(...dataPoints);
+    const minVal = Math.min(...dataPoints);
+    let hovered = false;
+
+    for (let i = 0; i < dataPoints.length; i++) {
+      const cx = padding + (width - padding * 2) * (i / (dataPoints.length - 1));
+      const cy = padding + (height - padding * 2) * (1 - (dataPoints[i] - minVal) / (maxVal - minVal || 1));
+      const r = 15 * ratio;
+      const dist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
+      if (dist < r) {
+        hovered = true;
+        tooltip.style.left = (event.clientX + 15) + 'px';
+        tooltip.style.top = (event.clientY - 25) + 'px';
+        tooltip.style.display = 'block';
+        tooltip.textContent = dataPoints[i];
+        break;
+      }
+    }
+    if (!hovered) {
+      tooltip.style.display = 'none';
+    }
+  });
+  canvas.addEventListener('mouseleave', function() {
+    tooltip.style.display = 'none';
+  });
+
+  // -- 프로바: 고유값 띄우기 + 바 높이 지정 + 바 툴팁 기능 --
+  const bars = document.querySelectorAll('.pro-bar .bar');
+  // 원하는 고유값(막대 높이) 배열: 순서대로 MON~SUN
+  const barHeights = [28, 41, 70, 42, 77, 39, 30];
+
+  bars.forEach((bar, idx) => {
+    // 높이 설정
+    bar.style.height = barHeights[idx] + 'px';
+
+    // 툴팁 생성 및 붙임
+    const tooltip = document.createElement('div');
+    tooltip.className = 'bar-tooltip';
+    tooltip.textContent = barHeights[idx];
+    bar.appendChild(tooltip);
+
+    bar.addEventListener('mouseenter', () => {
+      tooltip.classList.add('visible');
+    });
+    bar.addEventListener('mouseleave', () => {
+      tooltip.classList.remove('visible');
+    });
+  });
+</script>
+</body>
+</html>

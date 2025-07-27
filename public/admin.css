@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+
+body {
+    margin: 0;
+    font-family: 'Nunito', Arial, sans-serif;
+    background: #f4f6fc;
+    color: #222;
+    overflow-x: hidden;
+}
+
+/* 컨테이너 및 레이아웃 */
+.container {
+    display: flex;
+    width: 100vw;
+    min-height: 100vh;
+    background: #e4e8f3;
+    border-radius: 25px;
+    box-sizing: border-box;
+    padding: 30px;
+}
+.sidebar {
+    width: 220px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 16px rgba(60, 75, 180, 0.07);
+    padding: 30px 18px 0 18px;
+    margin-right: 25px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.logo {
+    font-weight: bold;
+    font-size: 1.3rem;
+    letter-spacing: -1px;
+    margin-bottom: 35px;
+    color: #444;
+}
+.profit {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 25px;
+}
+.profit-small {
+    color: #4fc466;
+    font-weight: bold;
+    font-size: 1rem;
+}
+.nav {
+    margin-top: 40px;
+}
+.nav li {
+    list-style: none;
+    margin: 10px 0;
+    font-weight: 600;
+    cursor: pointer;
+    color: #333;
+    position: relative;
+    padding-left: 8px;
+    transition: color .2s;
+}
+.nav li.active,
+.nav li:hover {
+    color: #5948ac;
+}
+.nav li .badge {
+    background: #f34c4c;
+    color: #fff;
+    border-radius: 30%;
+    padding: 1px 8px;
+    font-size: 0.9rem;
+    position: absolute;
+    right: -20px;
+    top: 0;
+}
+.logout {
+    margin-top: auto;
+    font-size: .95rem;
+    color: #aaa;
+    cursor: pointer;
+    margin-bottom: 25px;
+}
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+.top-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: #fff;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 2px 24px rgba(147,105,235,0.10);
+    position: relative;
+}
+.asset-profit {
+    width: 60%;
+    background: #7b21e6;
+    border-radius: 16px 36px 60px 14px;
+    color: #fff;
+    padding: 32px 28px 18px 28px;
+    position: relative;
+    overflow: hidden;
+}
+.asset-profit h2 {
+    margin: 0 0 17px 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.ap-cards {
+    display: flex;
+    gap: 38px;
+    font-size: 1.18rem;
+    font-weight: 600;
+}
+.ap-cards .ap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.ap small {
+    color: #ece6ff;
+    font-size: .97rem;
+    font-weight: 400;
+    margin-bottom: 3px;
+}
+.stats-graph {
+    margin: 18px 0 10px 0;
+}
+.stat-change {
+    font-size: 1.1rem;
+    color: #88ffe8;
+    font-weight: 700;
+}
+.explore-btn {
+    padding: 10px 25px;
+    background: #ff805c;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 2px 12px rgba(255, 128, 92, 0.12);
+    font-size: 1rem;
+}
+.medium-circle {
+    position: absolute;
+    top: 47px;
+    right: 22px;
+    width: 112px;
+    height: 112px;
+    background: conic-gradient(#f89341 0 36deg, #fff2, #7b21e6 0 360deg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #ff805c;
+    font-size: 2.1rem;
+    font-weight: bold;
+    z-index: 3;
+    border: 7px solid #fff;
+}
+.medium-circle span {
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 400;
+    display: block;
+}
+.asset-value {
+    min-width: 260px;
+    margin-left: 36px;
+}
+.asset-value h3 {
+    font-weight: 700;
+    font-size: 2.7rem;
+    margin: 0 0 18px 0;
+}
+.asset-breakdown {
+    font-size: 1.1rem;
+    margin-top: 16px;
+}
+.asset-breakdown td {
+    vertical-align: top;
+    padding-bottom: 6px;
+    padding-right: 12px;
+}
+.profile-pic {
+    width: 55px; height: 55px;
+    border-radius: 50%;
+    position: absolute;
+    top: 25px; right: 22px;
+    border: 3px solid #ddd;
+}
+.bottom-panel {
+    display: flex;
+    gap: 28px;
+    margin-top: 12px;
+}
+.insights, .market-moves {
+    background: #fff;
+    border-radius: 20px;
+    padding: 27px 30px;
+    flex: 1;
+    box-shadow: 0 1px 14px rgba(147,105,235,0.06);
+}
+.insights-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+.weekly-insights {
+    display: flex;
+    gap: 41px;
+    align-items: flex-end;
+}
+.growth, .loss {
+    font-size: 1.6rem;
+    color: #5edc91;
+    font-weight: bold;
+}
+.loss {
+    color: #f15d56;
+}
+
+/* 프로 인사이트 막대그래프 및 라벨 완전 정렬 ver */
+.pro-bar-wrapper {
+    width: 266px;               /* (막대 폭 18px * 7) + (gap 20px * 6) = 266px 정렬 */
+    margin: 0 auto;
+}
+.pro-bar {
+    width: 100%;
+    max-width: 266px;
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;                  /* 막대 사이 간격 */
+    margin-top: 18px;
+}
+.pro-bar div {
+    width: 18px;                /* 막대 폭 */
+    background: #ceb1eb;
+    border-radius: 4px;
+}
+.pro-bar .mon {height: 28px;}
+.pro-bar .tue {height: 41px;}
+.pro-bar .wed {height: 70px; background: #7b21e6;}
+.pro-bar .thu {height: 42px;}
+.pro-bar .fri {height: 77px; background: #ff805c;}
+.pro-bar .sat {height: 39px;}
+.pro-bar .sun {height: 30px;}
+.pro-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 266px;
+    margin-top: 6px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.pro-bar-labels span {
+    width: 18px;                /* 막대 폭과 동일하게 */
+    text-align: center;
+    font-size: 0.75rem;
+    color: #444;
+    user-select: none;
+    display: block;
+}
+
+/* 시장 정보 항목 */
+.market-moves-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    font-size: 1.07rem;
+}
+.market-moves-item:last-child {margin-bottom: 0;}
+.stock-icon {
+    width: 33px; height: 33px;
+    border-radius: 10px;
+    background: #eee;
+    display: inline-block;
+    text-align: center;
+    line-height: 33px;
+    font-size: 1.41rem;
+    font-weight: bold;
+}
+.move-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.move-detail {
+    color: #666;
+    font-size: .92rem;
+}
+.move-logo-nike { color: #e9543e;}
+.move-logo-apple { color: #191919;}
+.move-logo-btc { color: #4e7dff;}
+.move-perc {
+    color: #61d77c;
+    margin-left: auto;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding-left: 7px;
+}
+/* 반응형 캔버스 wrapper */
+.canvas-wrapper {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+}
