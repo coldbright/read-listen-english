@@ -115,7 +115,7 @@
       box-shadow: 0 1px 8px rgba(39, 70, 117, 0.07);
       padding: 0 8px 0 18px;
       height: 42px;
-      width: 360px; /* 검색창 너비 약간 넓게 조정 */
+      width: 340px; /* 검색창 너비 약간 넓게 조정 */
       flex-shrink: 0;
     }
     .search-form input[type="text"] {
@@ -422,15 +422,17 @@
 <div class="container">
   <!-- Sidebar -->
   <nav class="sidebar">
-    <div class="logo">Investio</div>
-    <div class="profit">$294 <span class="profit-small">+0.05%</span></div>
-    <ul class="nav">
-      <li class="active">Dashboard</li>
-      <li>Insights <span class="badge">12</span></li>
-      <li>Performance</li>
-      <li>Statistics</li>
-      <li>Channels</li>
-    </ul>
+<!--    <div class="logo">Investio</div>-->
+<!--    <div class="profit">$294 <span class="profit-small">+0.05%</span></div>-->
+<!--    <ul class="nav">-->
+<!--      <li class="active">Dashboard</li>-->
+<!--      <li>Insights <span class="badge">12</span></li>-->
+<!--      <li>Performance</li>-->
+<!--      <li>Statistics</li>-->
+<!--      <li>Channels</li>-->
+<!--    </ul>-->
+
+
     <div class="logout">&#x21bb; Logout</div>
   </nav>
   <!-- Main content -->
@@ -505,7 +507,14 @@
         </div>
       </section>
       <section class="market-moves">
-
+        <div class="book-manager">
+          <h3>책 검색 후 추가</h3>
+          <form id="bookForm" autocomplete="off">
+            <input type="text" id="bookInput" placeholder="책 이름을 입력하세요" />
+            <button type="submit">추가</button>
+          </form>
+          <div class="book-list" id="bookList"></div>
+        </div>
       </section>
     </section>
   </main>
@@ -594,11 +603,13 @@
     const maxVal = Math.max(...dataPoints);
     const minVal = Math.min(...dataPoints);
     let hovered = false;
+
     for (let i = 0; i < dataPoints.length; i++) {
       const cx = padding + (width - padding * 2) * (i / (dataPoints.length - 1));
-      const cy = padding + (height - padding * 2) * (1 - (data[i] - minVal) / (maxVal - minVal || 1));
+      const cy = padding + (height - padding * 2) * (1 - (dataPoints[i] - minVal) / (maxVal - minVal || 1));
       const r = 15 * ratio;
       const dist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
+
       if (dist < r) {
         hovered = true;
         tooltip.style.left = (event.clientX + 15) + 'px';
@@ -612,6 +623,7 @@
       tooltip.style.display = 'none';
     }
   });
+
   canvas.addEventListener('mouseleave', function() {
     tooltip.style.display = 'none';
   });
