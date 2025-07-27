@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 const server = http.createServer(app);
+const port = process.env.PORT || 3000;
 
 require('dotenv').config();
 
@@ -96,6 +97,6 @@ app.get("/register", (req, res) => {
 })
 
 
-server.listen(3000, () => {
-        console.log("the server is runing on http://localhost:3000")
+server.listen(port, () => {
+        console.log(`the server is runing on http://localhost:${port}`)
 })

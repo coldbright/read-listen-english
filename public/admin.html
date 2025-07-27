@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Investment Dashboard</title>
+  <link rel="stylesheet" href="admin.css">
   <style>
     @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
     body {
@@ -101,6 +102,88 @@
       box-shadow: 0 2px 24px rgba(147,105,235,0.10);
       position: relative;
     }
+    /* 검색창 스타일 추가 */
+    .search-form {
+      position: absolute;
+      top: 35px;
+      right: 35px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      background: #e8e8e8;
+      border-radius: 22px;
+      box-shadow: 0 1px 8px rgba(39, 70, 117, 0.07);
+      padding: 0 8px 0 18px;
+      height: 42px;
+      width: 360px; /* 검색창 너비 약간 넓게 조정 */
+      flex-shrink: 0;
+    }
+    .search-form input[type="text"] {
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      padding: 9px 6px 9px 0;
+      outline: none;
+      width: 100%;
+      color: #222;
+      font-family: inherit;
+    }
+    .search-form input[type="text"]::placeholder {
+      color: #999;
+      opacity: 1;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .search-form button {
+      border: none;
+      background: #6349e6;
+      color: #fff;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 7px;
+      font-size: 1.18rem;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .search-form button:hover {
+      background: #273970;
+    }
+
+    /* 학생 정보 박스 추가 */
+    .student-info {
+      position: absolute;
+      top: 85px; /* 검색창 바로 아래 */
+      right: 35px;
+      width: 360px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 6px 16px rgba(100, 81, 220, 0.12);
+      padding: 20px 25px;
+      box-sizing: border-box;
+      font-weight: 600;
+      color: #2d2d2d;
+      user-select: none;
+      z-index: 10;
+    }
+    .student-info div {
+      margin-bottom: 11px;
+      font-size: 1rem;
+    }
+    .student-info div:last-child {
+      margin-bottom: 0;
+    }
+    .student-info .label {
+      color: #666;
+      font-weight: 400;
+      margin-right: 7px;
+    }
+
+    /* 기존 스타일 이하 동일... */
     .asset-profit {
       width: 60%;
       background: #274675;
@@ -232,8 +315,6 @@
     .loss {
       color: #f15d56;
     }
-
-    /* 프로바 막대 밑 요일 레이블 및 툴팁 */
     .pro-bar-wrapper {
       width: 280px;
       margin: 0 auto;
@@ -292,7 +373,6 @@
     .bar-tooltip.visible {
       opacity: 1;
     }
-
     .market-moves-item {
       display: flex;
       align-items: center;
@@ -333,7 +413,7 @@
     /* 반응형 캔버스 wrapper */
     .canvas-wrapper {
       width: 100%;
-      max-width: 450px;
+      max-width: 650px;
       margin: 0 auto;
     }
   </style>
@@ -358,36 +438,36 @@
     <!-- Top panel -->
     <section class="top-panel">
       <section class="asset-profit">
-        <h2>Assets Profitability</h2>
-        <div class="ap-cards">
-          <div class="ap"><small>Funds AVG</small>$15,543</div>
-          <div class="ap"><small>Crypto AVG</small>$13,253</div>
-          <div class="ap"><small>Stocks AVG</small>$17,329</div>
-        </div>
+        <h2>Monthly Books Read</h2>
+        <div class="ap-cards"></div>
         <div class="stats-graph">
           <div class="canvas-wrapper">
             <canvas id="lineChart" width="800" height="200" style="width: 100%; background:#274675; border-radius: 20px;"></canvas>
           </div>
-          <div class="stat-change" id="statChange">+1.42%</div>
         </div>
         <button class="explore-btn">Explore Statistics</button>
-        <div class="medium-circle">
-          13%
-          <span>MEDIUM</span>
-        </div>
       </section>
-      <section class="asset-value">
-        <div style="font-size:1rem; color:#888; font-weight:600; margin-bottom:14px;">Assets Value</div>
-        <h3>$365,324</h3>
-        <table class="asset-breakdown">
-          <tr><td>Funds</td><td>$121,830</td><td>33%</td></tr>
-          <tr><td>Crypto</td><td>$61,853</td><td>17%</td></tr>
-          <tr><td>Stocks</td><td>$181,641</td><td>50%</td></tr>
-        </table>
-        <img src="https://i.pravatar.cc/70" class="profile-pic" alt="Profile picture">
-      </section>
+      <section class="asset-value"></section>
+      <!-- ▼ 검색창 추가 -->
+      <form class="search-form" action="#" autocomplete="off" onsubmit="return false;">
+        <input type="text" placeholder="Search..." />
+        <button type="submit">
+          <!-- 검색 아이콘 (SVG) -->
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <circle cx="8" cy="8" r="6.8" stroke="#fff" stroke-width="2"/>
+            <line x1="13" y1="13" x2="16" y2="16" stroke="#fff" stroke-width="2"/>
+          </svg>
+        </button>
+      </form>
+      <!-- ▼ 학생 정보 박스 -->
+      <div class="student-info">
+        <div><span class="label">학생 이름:</span> 홍길동</div>
+        <div><span class="label">읽은 책 개수:</span> 48권</div>
+        <div><span class="label">최근 6개월 평균 AR 지수:</span> 87.5</div>
+        <div><span class="label"></span></div>
+      </div>
     </section>
-    <!-- Bottom panel -->
+    <!-- Bottom panel 이하 동일... -->
     <section class="bottom-panel">
       <section class="insights">
         <div class="insights-title">Weekly Investment Insights</div>
@@ -401,7 +481,6 @@
             <small>Loss Points</small>
           </div>
           <div>
-            <!-- 프로바 막대 + 요일 레이블 + 툴팁 구조 -->
             <div class="pro-bar-wrapper" id="proBarWrapper">
               <div class="pro-bar">
                 <div class="bar mon"></div>
@@ -422,35 +501,11 @@
                 <span>SUN</span>
               </div>
             </div>
-            <small>PRO INSIGHTS</small>
           </div>
         </div>
       </section>
       <section class="market-moves">
-        <div class="market-moves-item">
-          <span class="stock-icon move-logo-nike">N</span>
-          <div class="move-info">
-            <strong>Nike Stocks</strong>
-            <span class="move-detail">15 hours ago</span>
-          </div>
-          <span class="move-perc">+1.5%</span>
-        </div>
-        <div class="market-moves-item">
-          <span class="stock-icon move-logo-apple"></span>
-          <div class="move-info">
-            <strong>Apple Stocks</strong>
-            <span class="move-detail">3 days ago</span>
-          </div>
-          <span class="move-perc">+2.1%</span>
-        </div>
-        <div class="market-moves-item">
-          <span class="stock-icon move-logo-btc">B</span>
-          <div class="move-info">
-            <strong>Bitcoin Value</strong>
-            <span class="move-detail">4 day ago</span>
-          </div>
-          <span class="move-perc">+1.1%</span>
-        </div>
+
       </section>
     </section>
   </main>
@@ -459,7 +514,7 @@
   // 라인 차트(툴팁 포함)
   const canvas = document.getElementById('lineChart');
   const ctx = canvas.getContext('2d');
-  let dataPoints = [50,71, 31, 43,21,31];
+  let dataPoints = [50,30,40,10,50,70,100];
 
   const tooltip = document.createElement('div');
   tooltip.style.position = 'absolute';
@@ -486,7 +541,6 @@
     ctx.scale(ratio, ratio);
     drawLineChart(dataPoints, ratio, displayWidth, displayHeight);
   }
-
   function drawLineChart(data, ratio = 1, widthInit = 800, heightInit = 200) {
     const width = widthInit;
     const height = heightInit;
@@ -526,16 +580,13 @@
       ctx.stroke();
     }
   }
-
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
-
   canvas.addEventListener('mousemove', function(event) {
     const rect = canvas.getBoundingClientRect();
     const ratio = window.devicePixelRatio || 1;
     const x = (event.clientX - rect.left) * ratio;
     const y = (event.clientY - rect.top) * ratio;
-
     const wrapper = canvas.parentElement;
     const width = wrapper.offsetWidth * ratio;
     const height = 200 * ratio;
@@ -543,10 +594,9 @@
     const maxVal = Math.max(...dataPoints);
     const minVal = Math.min(...dataPoints);
     let hovered = false;
-
     for (let i = 0; i < dataPoints.length; i++) {
       const cx = padding + (width - padding * 2) * (i / (dataPoints.length - 1));
-      const cy = padding + (height - padding * 2) * (1 - (dataPoints[i] - minVal) / (maxVal - minVal || 1));
+      const cy = padding + (height - padding * 2) * (1 - (data[i] - minVal) / (maxVal - minVal || 1));
       const r = 15 * ratio;
       const dist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
       if (dist < r) {
@@ -568,19 +618,13 @@
 
   // -- 프로바: 고유값 띄우기 + 바 높이 지정 + 바 툴팁 기능 --
   const bars = document.querySelectorAll('.pro-bar .bar');
-  // 원하는 고유값(막대 높이) 배열: 순서대로 MON~SUN
   const barHeights = [28, 41, 70, 42, 77, 39, 30];
-
   bars.forEach((bar, idx) => {
-    // 높이 설정
     bar.style.height = barHeights[idx] + 'px';
-
-    // 툴팁 생성 및 붙임
     const tooltip = document.createElement('div');
     tooltip.className = 'bar-tooltip';
     tooltip.textContent = barHeights[idx];
     bar.appendChild(tooltip);
-
     bar.addEventListener('mouseenter', () => {
       tooltip.classList.add('visible');
     });

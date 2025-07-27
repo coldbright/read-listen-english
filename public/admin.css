@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
-
 body {
     margin: 0;
     font-family: 'Nunito', Arial, sans-serif;
@@ -7,8 +6,6 @@ body {
     color: #222;
     overflow-x: hidden;
 }
-
-/* 컨테이너 및 레이아웃 */
 .container {
     display: flex;
     width: 100vw;
@@ -63,7 +60,7 @@ body {
 }
 .nav li.active,
 .nav li:hover {
-    color: #5948ac;
+    color: #6349e6;
 }
 .nav li .badge {
     background: #f34c4c;
@@ -100,7 +97,7 @@ body {
 }
 .asset-profit {
     width: 60%;
-    background: #7b21e6;
+    background: #274675;
     border-radius: 16px 36px 60px 14px;
     color: #fff;
     padding: 32px 28px 18px 28px;
@@ -230,50 +227,66 @@ body {
     color: #f15d56;
 }
 
-/* 프로 인사이트 막대그래프 및 라벨 완전 정렬 ver */
+/* 프로바 막대 밑 요일 레이블 및 툴팁 */
 .pro-bar-wrapper {
-    width: 266px;               /* (막대 폭 18px * 7) + (gap 20px * 6) = 266px 정렬 */
+    width: 280px;
     margin: 0 auto;
+    margin-top: 18px;
+    position: relative;
 }
 .pro-bar {
-    width: 100%;
-    max-width: 266px;
     display: flex;
     align-items: flex-end;
-    gap: 20px;                  /* 막대 사이 간격 */
-    margin-top: 18px;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 7px;
 }
-.pro-bar div {
-    width: 18px;                /* 막대 폭 */
-    background: #ceb1eb;
+.bar {
+    width: 24px;
+    background-color: #ceb1eb;
     border-radius: 4px;
+    transition: height 0.3s;
+    position: relative;
+    cursor: pointer;
 }
-.pro-bar .mon {height: 28px;}
-.pro-bar .tue {height: 41px;}
-.pro-bar .wed {height: 70px; background: #7b21e6;}
-.pro-bar .thu {height: 42px;}
-.pro-bar .fri {height: 77px; background: #ff805c;}
-.pro-bar .sat {height: 39px;}
-.pro-bar .sun {height: 30px;}
+.bar.wed { background-color: #7b21e6; }
+.bar.fri { background-color: #ff805c; }
 .pro-bar-labels {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    max-width: 266px;
-    margin-top: 6px;
-    margin-left: auto;
-    margin-right: auto;
 }
 .pro-bar-labels span {
-    width: 18px;                /* 막대 폭과 동일하게 */
+    width: 24px;
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: #444;
     user-select: none;
     display: block;
+    letter-spacing: -0.5px;
+}
+/* 툴팁 스타일 */
+.bar-tooltip {
+    position: absolute;
+    background: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    pointer-events: none;
+    white-space: nowrap;
+    transform: translateX(-50%) translateY(-120%);
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 100;
+    user-select: none;
+    left: 50%;
+    top: 0;
+}
+.bar-tooltip.visible {
+    opacity: 1;
 }
 
-/* 시장 정보 항목 */
 .market-moves-item {
     display: flex;
     align-items: center;
@@ -314,6 +327,6 @@ body {
 /* 반응형 캔버스 wrapper */
 .canvas-wrapper {
     width: 100%;
-    max-width: 450px;
+    max-width: 650px;
     margin: 0 auto;
 }
