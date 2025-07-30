@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>Investment Dashboard</title>
+  <title>admin</title>
   <link rel="stylesheet" href="admin.css">
   <style>
     @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
@@ -260,11 +260,11 @@
       font-weight: 400;
       display: block;
     }
-    .asset-value {
+    .search-student {
       min-width: 260px;
       margin-left: 36px;
     }
-    .asset-value h3 {
+    .search-student h3 {
       font-weight: 700;
       font-size: 2.7rem;
       margin: 0 0 18px 0;
@@ -440,7 +440,7 @@
     <!-- Top panel -->
     <section class="top-panel">
       <section class="asset-profit">
-        <h2>Monthly Books Read</h2>
+        <h2>Monthly Books Rates</h2>
         <div class="ap-cards"></div>
         <div class="stats-graph">
           <div class="canvas-wrapper">
@@ -449,7 +449,8 @@
         </div>
         <button class="explore-btn">Explore Statistics</button>
       </section>
-      <section class="asset-value"></section>
+
+      <section class="search-student"></section>
       <!-- ▼ 검색창 추가 -->
       <form class="search-form" action="#" autocomplete="off" onsubmit="return false;">
         <input type="text" placeholder="Search..." />
@@ -463,24 +464,24 @@
       </form>
       <!-- ▼ 학생 정보 박스 -->
       <div class="student-info">
-        <div><span class="label">학생 이름:</span> 홍길동</div>
-        <div><span class="label">읽은 책 개수:</span> 48권</div>
-        <div><span class="label">최근 6개월 평균 AR 지수:</span> 87.5</div>
+        <div><span class="label">학생 이름:</span> </div>
+        <div><span class="label">읽은 책 개수:</span> </div>
+        <div><span class="label">최근 6개월 평균 AR 지수:</span> </div>
         <div><span class="label"></span></div>
       </div>
     </section>
     <!-- Bottom panel 이하 동일... -->
     <section class="bottom-panel">
       <section class="insights">
-        <div class="insights-title">Weekly Investment Insights</div>
+        <div class="insights-title">Weekly Book Rates</div>
         <div class="weekly-insights">
           <div>
             <span class="growth">5</span><br>
-            <small>Growth Points</small>
+            <small>Most Read</small>
           </div>
           <div>
             <span class="loss">3</span><br>
-            <small>Loss Points</small>
+            <small>Lowest Read</small>
           </div>
           <div>
             <div class="pro-bar-wrapper" id="proBarWrapper">
@@ -523,7 +524,7 @@
   // 라인 차트(툴팁 포함)
   const canvas = document.getElementById('lineChart');
   const ctx = canvas.getContext('2d');
-  let dataPoints = [50,30,40,10,50,70,100];
+  let dataPoints = [50, 30, 40, 10, 50, 70, 100];
 
   const tooltip = document.createElement('div');
   tooltip.style.position = 'absolute';
@@ -550,6 +551,7 @@
     ctx.scale(ratio, ratio);
     drawLineChart(dataPoints, ratio, displayWidth, displayHeight);
   }
+
   function drawLineChart(data, ratio = 1, widthInit = 800, heightInit = 200) {
     const width = widthInit;
     const height = heightInit;
@@ -589,9 +591,10 @@
       ctx.stroke();
     }
   }
+
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
-  canvas.addEventListener('mousemove', function(event) {
+  canvas.addEventListener('mousemove', function (event) {
     const rect = canvas.getBoundingClientRect();
     const ratio = window.devicePixelRatio || 1;
     const x = (event.clientX - rect.left) * ratio;
@@ -624,19 +627,35 @@
     }
   });
 
-  canvas.addEventListener('mouseleave', function() {
+  canvas.addEventListener('mouseleave', function () {
     tooltip.style.display = 'none';
   });
 
   // -- 프로바: 고유값 띄우기 + 바 높이 지정 + 바 툴팁 기능 --
   const bars = document.querySelectorAll('.pro-bar .bar');
   const barHeights = [28, 41, 70, 42, 77, 39, 30];
+
+  const maxHeight = Math.max(...barHeights);
+  const minHeight = Math.min(...barHeights);
+
   bars.forEach((bar, idx) => {
-    bar.style.height = barHeights[idx] + 'px';
+    const height = barHeights[idx];
+    bar.style.height = height + 'px';
+
+    // 색상 지정: 최대 -> 초록, 최소 -> 빨강, 나머지 -> 회색
+    if (height === maxHeight) {
+      bar.style.backgroundColor = '#61d77c'; // 초록색
+    } else if (height === minHeight) {
+      bar.style.backgroundColor = '#f34c4c'; // 빨간색
+    } else {
+      bar.style.backgroundColor = '#b0b0b0'; // 회색
+    }
+
     const tooltip = document.createElement('div');
     tooltip.className = 'bar-tooltip';
-    tooltip.textContent = barHeights[idx];
+    tooltip.textContent = height;
     bar.appendChild(tooltip);
+
     bar.addEventListener('mouseenter', () => {
       tooltip.classList.add('visible');
     });
@@ -644,6 +663,92 @@
       tooltip.classList.remove('visible');
     });
   });
+  // 가장 높은 값(초록)은 Most Read
+  document.querySelector('.growth').textContent = maxHeight;
+  // 가장 낮은 값(빨강)은 Lowest Read
+  document.querySelector('.loss').textContent = minHeight;
+
+
+  //////////////////////////////////////////////////////////
+  //로그인시 로직
+  (async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+    alert('로그인이 필요합니다.');
+    window.location.href = '/login';
+    return;
+  }
+
+    try {
+    const res = await fetch('/api/check-admin', {
+    headers: {'Authorization': 'Bearer ' + token}
+  });
+
+    if (!res.ok) {
+    alert('관리자 권한이 필요합니다.');
+    window.location.href = '/login';
+  }
+    // 인증 성공 시 페이지 정상 표시
+  } catch (error) {
+    alert('인증 오류 발생, 다시 로그인 해 주세요.');
+    window.location.href = '/login';
+  }
+  })();
+
+  //////////////////////////검색 js////////////////
+  document.querySelector('.search-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const input = e.target.querySelector('input');
+    const username = input.value.trim();
+
+    if (!username) {
+      alert('학생 이름을 입력하세요.');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token'); // JWT 토큰 가져오기 (로그인 방식에 맞게 조정)
+
+      // API 요청 보내기
+      const response = await fetch(`/api/search-student?username=${encodeURIComponent(username)}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const studentInfo = document.querySelector('.student-info');
+      const errorMessageElem = studentInfo.querySelector('.error-message');
+
+      if (response.status === 404) {
+        // 학생 못 찾음
+        errorMessageElem.textContent = "학생을 찾을 수 없습니다.";
+        // 기존 정보 초기화
+        studentInfo.querySelector('.student-name').textContent = '-';
+        studentInfo.querySelector('.books-read').textContent = '-';
+        studentInfo.querySelector('.ar-score').textContent = '-';
+        return;
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        errorMessageElem.textContent = `오류: ${errorData.message}`;
+        return;
+      }
+
+      const data = await response.json();
+      errorMessageElem.textContent = '';
+
+      // 현재 API는 username만 반환하기 때문에, 추가 학생 정보가 필요하면 API 확장 필요
+      studentInfo.querySelector('.student-name').textContent = data.username;
+      studentInfo.querySelector('.books-read').textContent = '-'; // 해당 정보가 없다면 하이픈 표시 등 처리
+      studentInfo.querySelector('.ar-score').textContent = '-';
+
+    } catch (error) {
+      document.querySelector('.student-info .error-message').textContent = '오류가 발생했습니다.';
+    }
+  });
+
 </script>
 </body>
 </html>

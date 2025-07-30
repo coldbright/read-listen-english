@@ -12,7 +12,6 @@ document.getElementById("login_field").addEventListener("submit", async function
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
-
         const result = await response.json();
         alert(result.message);
 
@@ -21,7 +20,6 @@ document.getElementById("login_field").addEventListener("submit", async function
             window.location.href = result.redirectUrl;
         }
     } catch (err) {
-        // console.error("로그인 오류:", err);
         alert("서버 통신 중 오류가 발생했습니다.");
     } finally {
         submitBtn.disabled = false;
